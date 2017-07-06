@@ -1,7 +1,7 @@
 import io
 
 #Read in File and get rid of headers
-f = open('/Users/tdisbrow2/Documents/nushellx/toi/mass-data/aud16.dat','r')
+f = open('aud16.dat','r')
 file = f.read().split('\r\n')
 file.pop()
 file.pop(0)
@@ -24,12 +24,20 @@ zi = 0 #proton number before decay
 p1zf = 0 #zi less one proton
 p2zf = 0 #zi less two protons
 
+BEzi=0.0 #Binding energy for zi
+BEp1zf=0.0 #BE for one proton decay
+BEp2zf=0.0 #BE for 2 proton decay
+
 charge = [] #proton number of bound to p1, not p2 decay
 nucleon = [] #nucleon number of same nucleus
 
-while i<111:
-	protons=z[i]
-	
+while i<len(file):
+	zi=z[i]
+	p1zf=zi-1
+	p2zf=zi-2
+	if p2zf>0:
+		
+		BEzi=be[i]
 	i+=1
 
 
