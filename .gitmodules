@@ -1,0 +1,21 @@
+[submodule "src/config/ndmakefile"]
+	path = src/config/ndmakefile
+	url = https://github.com/nd-nuclear-theory/ndmakefile.git
+[submodule "src/config/ndconfig"]
+	path = src/config/ndconfig
+	url = https://github.com/nd-nuclear-theory/ndconfig.git
+[submodule "src/libraries/basis"]
+	path = src/libraries/basis
+	url = https://github.com/nd-nuclear-theory/basis.git
+[submodule "src/libraries/am"]
+	path = src/libraries/am
+	url = https://github.com/nd-nuclear-theory/am.git
+[submodule "src/libraries/mcutils"]
+	path = src/libraries/mcutils
+	url = https://github.com/nd-nuclear-theory/mcutils.git
+[submodule "src/libraries/cppformat"]
+	path = src/libraries/cppformat
+	url = https://github.com/nd-nuclear-theory/cppformat.git
+[submodule "src/libraries/eigen3"]
+	path = src/libraries/eigen3
+	url = https://github.com/kc9jud/eigen3.git

@@ -106,6 +106,41 @@ ENV/
 
 
 ################################################################
+# C++-specific
+################################################################
+# general patterns
+*.[oa]
+*~
+*.tgz
+*.stackdump
+*#
+
+# unit test executables
+*_test
+
+# all executables on Cygwin
+*.exe
+
+# noise files
+*.dat
+*.bin
+*.pdf
+
+# local files
+*.local
+
+# local installation
+install/
+
+# symlinks
+##config.mk
+
+# Doxygen-generated docs
+doc/html/
+doc/latex/
+
+
+################################################################
 # Linux-specific
 ################################################################
 *~
