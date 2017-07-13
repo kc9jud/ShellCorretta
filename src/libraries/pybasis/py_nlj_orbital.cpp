@@ -7,9 +7,15 @@
     in Nuclear Physics and Related Areas
 
 ****************************************************************/
+
+
 #include <iostream>
 #include <string>
 #include <sstream>
+
+#include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
+#include <pybind11/operators.h>
 
 #include "basis/nlj_orbital.h"
 #include "pybasis/converters.h"

@@ -6,6 +6,7 @@ $(eval $(begin-module))
 
 # module_units_h :=
 module_units_cpp-h := py_nlj_orbital pybasis pyam converters
+module_units_cpp-h += py_m_scheme
 # module_units_f :=
 # module_programs_cpp :=
 # module_programs_f :=
