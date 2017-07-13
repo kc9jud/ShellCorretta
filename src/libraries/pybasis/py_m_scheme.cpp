@@ -36,6 +36,9 @@ namespace pybasis {
       .def("weight_max",&basis::SingleParticleSubspacePN::weight_max)
       .def("Nmax",&basis::SingleParticleSubspacePN::Nmax)
       .def("DebugStr",&basis::SingleParticleSubspacePN::DebugStr)
+      .def("__getitem__", [](const basis::SingleParticleSubspacePN &a, int i) {
+                            return basis::SingleParticleStatePN(a, i);
+                          }, py::is_operator())
     ;
 
     InitBaseState<basis::SingleParticleSubspacePN>(module, "BaseSingleParticleStatePN");

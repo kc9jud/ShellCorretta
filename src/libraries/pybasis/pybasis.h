@@ -16,6 +16,7 @@ template <typename tSubspaceLabelsType, typename tStateLabelsType>
     .def("ContainsState",&base::ContainsState)
     .def("LookUpStateIndex",&base::LookUpStateIndex)
     .def("size",&base::size)
+    .def("__len__",&base::size)
   ;
 }
 
@@ -38,7 +39,9 @@ template <typename tSubspaceType>
     .def("LookUpSubspaceIndex",&base::LookUpSubspaceIndex)
     .def("LookUpSubspace",&base::LookUpSubspace)
     .def("GetSubspace",&base::GetSubspace)
+    .def("__getitem__",&base::GetSubspace)
     .def("size",&base::size)
+    .def("__len__",&base::size)
     .def("Dimension",&base::Dimension)
   ;
 }

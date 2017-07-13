@@ -12,4 +12,4 @@ print(subspace.DebugStr())
 state = pybasis.m_scheme.SingleParticleStatePN(subspace, 0)
 print(state.labels())
 
-print(subspace.GetStateLabels(0))
+print(subspace[0].labels())
