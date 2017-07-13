@@ -26,7 +26,7 @@ modules +=
 # libraries
 ################
 
-modules +=
+modules += libraries/pybasis
 
 # additional libraries -- cloned as submodule
 
@@ -52,6 +52,13 @@ CPPFLAGS += -DHAVE_INLINE
 # basis submodule
 #   map vs. hash for space lookup in basis library
 CPPFLAGS += -DBASIS_HASH
+
+# Python
+CPPFLAGS += $(shell python3-config --cflags)
+LDFLAGS += $(shell python3-config --ldflags)
+search_prefix += ./libraries/pybind11
+CPPFLAGS += -fPIC
+FFLAGS += -fPIC
 
 # mcutils submodule
 #   allow legacy global access to variables now wrapped in mcutils namespace
