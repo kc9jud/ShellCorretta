@@ -1,6 +1,6 @@
 [submodule "src/config/ndmakefile"]
 	path = src/config/ndmakefile
-	url = https://github.com/kc9jud/ndmakefile.git
+	url = https://github.com/nd-nuclear-theory/ndmakefile.git
 [submodule "src/config/ndconfig"]
 	path = src/config/ndconfig
 	url = https://github.com/nd-nuclear-theory/ndconfig.git
