@@ -2,8 +2,7 @@ import numpy as np
 
 np.set_printoptions(threshold=np.nan)
 
-SD_states_test = []
-SD_states  = []         #nested list holding all possible Slater determinants
+SD_states  = []        #nested list holding all possible Slater determinants
 nParticles = 4         #number of particles in simulation
 nLevels    = 4         #number of shells we include in our calculation
 nStates    = 2*nLevels #number of states available for a given number of levels
@@ -81,17 +80,17 @@ def makeTwoBodyInts():
                         print([p,q,r,s,-g])
     return twoBodyInts
 
-def Hamiltonian():
+def OneBodyHamiltonian():
     HMat = np.zeros((len(SD_states), len(SD_states)))
-
-    # one-body
     for i in range(0, len(SD_states)):
         ket = SD_states[i]
         for inter in oneBodyInts:
             if len(np.intersect1d(inter[0], ket)) == 1:
                 HMat[i, i] += inter[-1]
+    return HMat
 
-    #two-body
+def TwoBodyHamiltonian():
+    HMat = np.zeros((len(SD_states), len(SD_states)))
     for i in range(0, len(SD_states)):
         ket = SD_states[i]
         for inter in twoBodyInts:
@@ -111,7 +110,7 @@ def Hamiltonian():
 g = 0.5
 oneBodyInts = makeOneBodyInts()
 twoBodyInts = makeTwoBodyInts()
-H = Hamiltonian()
+H = OneBodyHamiltonian() + TwoBodyHamiltonian()
 
 np.savetxt("Hamiltonian.txt",H,"%5.1f")
 import matplotlib.pyplot as plt
