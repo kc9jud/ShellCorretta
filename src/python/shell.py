@@ -66,56 +66,57 @@ SD_states = makeSDs(states, nParticles)
 print(np.asarray(SD_states))
 
 def makeOneBodyInts(sp_states):
-    oneBodyInts = []
+    oneBodyInts = {}
     for p in range(0, len(sp_states)):
         matel = states[p].n()
-        oneBodyInts.append(np.asarray([p, p, matel]))
+        oneBodyInts[(p, p)] = matel
     return oneBodyInts
 
 def makeTwoBodyInts(sp_states):
-    twoBodyInts = []
-    for p in range(0,len(sp_states)):
-        for q in range(p+1,len(sp_states)):
-            for r in range(0,len(sp_states)):
-                for s in range(r+1,len(sp_states)):
-                    #pairing model
-                    if ((p+1 == q) and (r+1==s) and (p%2==0) and (r%2==0)):
-                        twoBodyInts.append(np.asarray([p,q,r,s,-g]))
+    twoBodyInts = {}
+    for p in range(0, len(sp_states)):
+        for q in range(p+1, len(sp_states)):
+            for r in range(0, len(sp_states)):
+                for s in range(r+1, len(sp_states)):
+                    # pairing model
+                    if (p+1 == q) and (r+1 == s) and (p % 2 == 0) and (r % 2 == 0):
+                        twoBodyInts[((p, q), (r, s))] = -g
     return twoBodyInts
 
-def OneBodyHamiltonian():
-    HMat = np.zeros((len(SD_states), len(SD_states)))
-    for i in range(0, len(SD_states)):
-        ket = SD_states[i]
-        for inter in oneBodyInts:
-            if len(np.intersect1d(inter[0], ket)) == 1:
-                HMat[i, i] += inter[-1]
-    return HMat
+def OneBodyHamiltonian(mb_basis, one_body_matels):
+    hamiltonian_matrix = np.zeros((len(mb_basis), len(mb_basis)))
+    for i in range(0, len(mb_basis)):
+        ket = mb_basis[i]
+        for labels, matel in one_body_matels.items():
+            if len(np.intersect1d(labels, ket)) == 1:
+                hamiltonian_matrix[i, i] += matel
+    return hamiltonian_matrix
 
-def TwoBodyHamiltonian():
-    HMat = np.zeros((len(SD_states), len(SD_states)))
-    for i in range(0, len(SD_states)):
-        ket = SD_states[i]
-        for inter in twoBodyInts:
-            ket_mod = np.setdiff1d(ket, inter[2:-1])
-            if len(ket_mod) != nParticles-2:
+def TwoBodyHamiltonian(mb_basis, two_body_matels):
+    hamiltonian_matrix = np.zeros((len(mb_basis), len(mb_basis)))
+    num_particles = len(mb_basis[0])
+    for i in range(0, len(mb_basis)):
+        ket = mb_basis[i]
+        for labels, matel in two_body_matels.items():
+            ket_mod = np.setdiff1d(ket, labels[1])
+            if len(ket_mod) != num_particles-2:
                 continue
-            bra_mod = np.union1d(inter[0:2], ket_mod)
-            if len(bra_mod) != nParticles:
+            bra_mod = np.union1d(labels[0], ket_mod)
+            if len(bra_mod) != num_particles:
                 continue
-            for j in range(0, len(SD_states)):
-                bra = SD_states[j]
+            for j in range(0, len(mb_basis)):
+                bra = mb_basis[j]
                 if len(np.setdiff1d(bra, bra_mod)) == 0:
-                    HMat[j, i] += inter[-1]
+                    hamiltonian_matrix[j, i] += matel
 
-    return HMat
+    return hamiltonian_matrix
 
 g = 0.5
 oneBodyInts = makeOneBodyInts(states)
-print(np.asarray(oneBodyInts))
+print(oneBodyInts)
 twoBodyInts = makeTwoBodyInts(states)
 print(np.asarray(twoBodyInts))
-H = OneBodyHamiltonian() + TwoBodyHamiltonian()
+H = OneBodyHamiltonian(SD_states, oneBodyInts) + TwoBodyHamiltonian(SD_states, twoBodyInts)
 
 np.savetxt("Hamiltonian.txt",H,"%5.1f")
 import matplotlib.pyplot as plt
