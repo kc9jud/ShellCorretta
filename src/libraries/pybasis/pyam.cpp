@@ -14,9 +14,17 @@ PYBIND11_MODULE(pyam, pyam_m) {
     .def(py::init<int>())
     .def("TwiceValue", &HalfInt::TwiceValue)
     .def("IsInteger", &HalfInt::IsInteger)
+    .def(py::self + py::self)
+    .def(py::self += py::self)
+    .def(py::self + int())
+    .def(int() + py::self)
+    .def(py::self - py::self)
+    .def(py::self -= py::self)
     .def("__str__", &HalfInt::Str)
     .def("__repr__", &HalfInt::Str)
+    .def("__float__", [](const HalfInt &a) { return float(a); }, py::is_operator())
   ;
 
   py::implicitly_convertible<float,HalfInt>();
+  py::implicitly_convertible<int,HalfInt>();
 }
