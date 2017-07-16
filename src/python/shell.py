@@ -6,7 +6,7 @@ import read_matel
 
 np.set_printoptions(threshold=np.nan)
 
-nParticles = 4  # number of particles in simulation
+nParticles = 2  # number of particles in simulation
 
 def set_up_sp_basis(filename):
     with open(filename) as fp:
@@ -99,8 +99,6 @@ def TwoBodyHamiltonian(mb_basis, two_body_matels):
                 bra = mb_basis[j]
                 if len(np.setdiff1d(bra, bra_mod)) == 0:
                     hamiltonian_matrix[j, i] += matel
-                    hamiltonian_matrix[i, j] += matel
-
 
     return hamiltonian_matrix
 
@@ -110,16 +108,16 @@ print("Single particle states:")
 print(sp_states.DebugStr(), "\n\n")
 
 SD_states = makeSDs(sp_states, nParticles)
-print(np.asarray(SD_states))
 
 g = 0.5
-# oneBodyInts = makeOneBodyInts(states)
-# print(oneBodyInts)
-# twoBodyInts = makeTwoBodyInts(states)
-# print(np.asarray(twoBodyInts))
 ob_matel, tb_matel = read_matel.read_m_scheme_matel('sdshellint.dat', sp_states)
 
-H = OneBodyHamiltonian(SD_states, ob_matel) + TwoBodyHamiltonian(SD_states, tb_matel)
+new_tb_matel = {}
+for key,val in tb_matel.items():
+    new_tb_matel[key] = val
+    new_tb_matel[key[1],key[0]] = val
+
+H = OneBodyHamiltonian(SD_states, ob_matel) + TwoBodyHamiltonian(SD_states, new_tb_matel)
 
 np.savetxt("Hamiltonian.txt",H,"%5.1f")
 import matplotlib.pyplot as plt
