@@ -2,12 +2,11 @@ import numpy as np
 
 import pybasis
 import pyam
+import read_matel
 
 np.set_printoptions(threshold=np.nan)
 
-nParticles = 4         #number of particles in simulation
-nLevels    = 4         #number of shells we include in our calculation
-nStates    = 2*nLevels #number of states available for a given number of levels
+nParticles = 2  # number of particles in simulation
 
 def set_up_sp_basis(filename):
     with open(filename) as fp:
@@ -57,14 +56,6 @@ def makeSDs(sp_states, num_particles, mb_states=[], current_state=[]):
             makeSDs(sp_states, num_particles, mb_states, new_state)
     return mb_states
 
-
-states = set_up_sp_basis('orbitals.dat')
-print("Single particle states:")
-print(states.DebugStr(),"\n\n")
-
-SD_states = makeSDs(states, nParticles)
-print(np.asarray(SD_states))
-
 def makeOneBodyInts(sp_states):
     oneBodyInts = {}
     for p in range(0, len(sp_states)):
@@ -111,12 +102,22 @@ def TwoBodyHamiltonian(mb_basis, two_body_matels):
 
     return hamiltonian_matrix
 
+
+sp_states = set_up_sp_basis('sd_orbitals.dat')
+print("Single particle states:")
+print(sp_states.DebugStr(), "\n\n")
+
+SD_states = makeSDs(sp_states, nParticles)
+
 g = 0.5
-oneBodyInts = makeOneBodyInts(states)
-print(oneBodyInts)
-twoBodyInts = makeTwoBodyInts(states)
-print(np.asarray(twoBodyInts))
-H = OneBodyHamiltonian(SD_states, oneBodyInts) + TwoBodyHamiltonian(SD_states, twoBodyInts)
+ob_matel, tb_matel = read_matel.read_m_scheme_matel('sdshellint.dat', sp_states)
+
+new_tb_matel = {}
+for key,val in tb_matel.items():
+    new_tb_matel[key] = val
+    new_tb_matel[key[1],key[0]] = val
+
+H = OneBodyHamiltonian(SD_states, ob_matel) + TwoBodyHamiltonian(SD_states, new_tb_matel)
 
 np.savetxt("Hamiltonian.txt",H,"%5.1f")
 import matplotlib.pyplot as plt
@@ -126,7 +127,7 @@ plt.show()
 
 #print(H)
 
-w, v = np.linalg.eig(H)
+w, v = np.linalg.eigh(H)
 
 #print(H - np.transpose(H))
 
