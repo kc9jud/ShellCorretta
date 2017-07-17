@@ -51,7 +51,7 @@ CPPFLAGS += -DHAVE_INLINE
 
 # basis submodule
 #   map vs. hash for space lookup in basis library
-CPPFLAGS += -DBASIS_HASH
+##CPPFLAGS += -DBASIS_HASH
 
 # Python
 CPPFLAGS += $(shell python3-config --cflags)
