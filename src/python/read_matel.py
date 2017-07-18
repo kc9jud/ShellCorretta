@@ -9,8 +9,10 @@ def skip_comments(fp):
         if line[0] != '#':
             return line
 
+def scale_factor(A):
+    return (18/A)**(.3)
 
-def read_m_scheme_matel(filename, sp_basis):
+def read_m_scheme_matel(filename, sp_basis, scale_factor=1.0):
     ob_matel = {}
     tb_matel = {}
 
@@ -47,7 +49,7 @@ def read_m_scheme_matel(filename, sp_basis):
             idx_s = index_mapping[int(tokens[3])]
             matel = float(tokens[4])
 
-            tb_matel[((idx_p, idx_q), (idx_r, idx_s))] = matel
+            tb_matel[((idx_p, idx_q), (idx_r, idx_s))] = matel*scale_factor
 
     return (ob_matel, tb_matel)
 

@@ -7,7 +7,6 @@ import read_matel
 
 np.set_printoptions(threshold=np.nan)
 
-nParticles = 2  # number of particles in simulation
 
 def set_up_sp_basis(filename):
     with open(filename) as fp:
@@ -19,31 +18,28 @@ def set_up_sp_basis(filename):
 
     return sp_subspace
 
+
 # this is a recursive function, so the function call is a bit funny
-def makeSDs(sp_states, num_particles, mb_states=[], current_state=[]):
+def makeSDs(sp_states, num_particles, m=None, only_pairs=False, mb_states=[], current_state=[]):
     # if the state is full, add it
     if len(current_state) == num_particles:
         # necessary if-test variables
         pairStatement = True
 
-        # SD state space restrictions
-        restrictSpin = True
-        restrictPairs = False
+        # check total m value
+        if m is not None:
+            two_spin = sum([sp_states[i].m().TwiceValue() for i in current_state])
+            if two_spin/2. != m:
+                return mb_states
 
-        # check spin conservation (M=0)
-        if restrictSpin:
-            spin = sum([float(sp_states[i].m()) for i in current_state])
-        else:
-            spin = 0
         # restrict to pair model
-        if restrictPairs:
+        if only_pairs:
             for i in range(0, len(current_state), 2):
                 if not ((current_state[i] % 2 == 0) and (current_state[i]+1 == current_state[i+1])):
-                    pairStatement = False
+                    return mb_states
 
-        if (spin == 0) and pairStatement:
-            # append Slater determinant to list of Slater determinants
-            mb_states.append(current_state[:])
+        # append Slater determinant to list of Slater determinants
+        mb_states.append(current_state[:])
 
     # still need more particles
     else:
@@ -54,28 +50,11 @@ def makeSDs(sp_states, num_particles, mb_states=[], current_state=[]):
             prevIndex = -1
         for i in range(prevIndex+1, len(sp_states)):
             new_state = current_state + [i]
-            makeSDs(sp_states, num_particles, mb_states, new_state)
+            makeSDs(sp_states, num_particles, m, only_pairs, mb_states, new_state)
     return mb_states
 
-def makeOneBodyInts(sp_states):
-    oneBodyInts = {}
-    for p in range(0, len(sp_states)):
-        matel = states[p].n()
-        oneBodyInts[(p, p)] = matel
-    return oneBodyInts
 
-def makeTwoBodyInts(sp_states):
-    twoBodyInts = {}
-    for p in range(0, len(sp_states)):
-        for q in range(p+1, len(sp_states)):
-            for r in range(0, len(sp_states)):
-                for s in range(r+1, len(sp_states)):
-                    # pairing model
-                    if (p+1 == q) and (r+1 == s) and (p % 2 == 0) and (r % 2 == 0):
-                        twoBodyInts[((p, q), (r, s))] = -g
-    return twoBodyInts
-
-def OneBodyHamiltonian(mb_basis, one_body_matels):
+def ob_hamiltonian(mb_basis, one_body_matels):
     hamiltonian_matrix = np.zeros((len(mb_basis), len(mb_basis)))
     for i in range(0, len(mb_basis)):
         ket = mb_basis[i]
@@ -84,66 +63,72 @@ def OneBodyHamiltonian(mb_basis, one_body_matels):
                 hamiltonian_matrix[i, i] += matel
     return hamiltonian_matrix
 
-def apply_two_body_operator(labels, ket):
+
+def apply_operator(labels, ket):
     create_ops, annihilate_ops = labels
 
-    phase = 0
+    g = 0
     try:
-        for op in reversed(annihilate_ops):
+        for op in annihilate_ops:
             idx = ket.index(op)
-            phase += idx
+            g += idx
             ket.pop(idx)
-        for op in create_ops:
+        for op in reversed(create_ops):
             idx = bisect.bisect_left(ket, op)
             if (idx < len(ket)) and (ket[idx] == op):
                 raise ValueError
-            phase += idx
+            g += idx
             ket.insert(idx, op)
     except ValueError:
         return (None, 0)
 
-    return (ket, (-1)**(phase % 2))
+    return (ket, (-1)**(g % 2))
 
-def TwoBodyHamiltonian(mb_basis, two_body_matels):
+
+def tb_hamiltonian(mb_basis, two_body_matels):
     hamiltonian_matrix = np.zeros((len(mb_basis), len(mb_basis)))
-    num_particles = len(mb_basis[0])
-    ct = 0
     for i in range(0, len(mb_basis)):
-        for labels, matel in two_body_matels.items():
+        for labels, matel in sorted(two_body_matels.items()):
             ket = mb_basis[i][:]
-            bra, phase = apply_two_body_operator(labels, ket[:])
+            bra, phase = apply_operator(labels, ket[:])
             if bra is None:
-                bra, phase = apply_two_body_operator(reversed(labels), ket[:])
-            if bra is None:
-                continue
+                bra, phase = apply_operator(reversed(labels), ket[:])
+                if bra is None:
+                    continue
             # if (labels[0] == labels[1]):
             #     phase *=2
             for j in range(0, len(mb_basis)):
                 test_bra = mb_basis[j]
                 if bra == test_bra:
                     hamiltonian_matrix[j, i] += matel*phase
-                    # hamiltonian_matrix[i, j] += matel*phase/4
+                    # hamiltonian_matrix[i, j] += matel*phase*scale_factor
 
     return hamiltonian_matrix
 
 
-sp_states = set_up_sp_basis('sd_orbitals.dat')
-print("Single particle states:")
-print(sp_states.DebugStr(), "\n\n")
+if __name__ == "__main__":
+    import argparse
 
-SD_states = makeSDs(sp_states, nParticles)
+    parser =  argparse.ArgumentParser(description="sd-shell model code")
+    parser.add_argument("--orbital-file", help="orbital file", type=str, default="sd_orbitals.dat")
+    parser.add_argument("--interaction-file", help="interaction file", type=str, default="sdshellint.dat")
+    parser.add_argument("N", help="number of valence neutrons", type=int)
+    parser.add_argument("M", help="total M", type=float)
+    args = parser.parse_args()
 
-ob_matel, tb_matel = read_matel.read_m_scheme_matel('sdshellint.dat', sp_states)
+    sp_states = set_up_sp_basis(args.orbital_file)
+    print("Single particle states:")
+    print(sp_states.DebugStr(), "\n\n")
 
-H = OneBodyHamiltonian(SD_states, ob_matel) + TwoBodyHamiltonian(SD_states, tb_matel)
+    SD_states = makeSDs(sp_states, args.N, args.M)
 
-np.savetxt('Hamiltonian.txt', H, '%5.2f')
-# import matplotlib.pyplot as plt
-# plt.imshow(H)
-# plt.show()
+    scale_factor = read_matel.scale_factor(16+args.N)
+    ob_matel, tb_matel = read_matel.read_m_scheme_matel(args.interaction_file, sp_states, scale_factor)
 
-w, v = np.linalg.eigh(H)
+    H = ob_hamiltonian(SD_states, ob_matel) + tb_hamiltonian(SD_states, tb_matel)
 
-print("")
-#print(np.sort(np.real(w)))
-print(np.sort(w))
+    w, v = np.linalg.eigh(H)
+
+    print("")
+    #print(np.sort(np.real(w)))
+    print(np.sort(w))
