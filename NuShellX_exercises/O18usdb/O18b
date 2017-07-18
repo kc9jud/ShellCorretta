@@ -1,0 +1,9 @@
+#!/bin/bash --login
+#PBS -m abe
+#PBS -N O18b     
+. ~/                    
+export PATH="/usr/local/bin:$PATH"
+cd $PBS_O_WORKDIR
+export OMP_NUM_THREADS=32
+. O18b.bat     
+qstat -f $PBS_JOBID

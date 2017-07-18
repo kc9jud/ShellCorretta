@@ -1,0 +1,67 @@
+nr 0.,10.,0.,    6.00
+fi 1.,4.,1.,6.
+0.,  5.00,  5.00,  5.00
+   -1.00,    6.00,0.5,1.,E (MeV)
+ds linef
+dl 1.5,  -0.800,experiment
+dl 0.5,  -0.400,$( 21)O 
+dl   1.50,  -0.400,(Z= 8)
+dl   3.00,  -0.400,(N=13)
+co black
+ds line
+di 
+     0.500     0.000
+     0.500     0.000
+ds fir
+di 
+     0.500     0.000
+co black
+ds line
+di 
+     0.500     1.220
+     0.500     1.220
+ds fir
+di 
+     0.500     1.220
+co black
+ds line
+di 
+     0.500     2.133
+     0.500     2.133
+ds fir
+di 
+     0.500     2.133
+co black
+ds line
+di 
+     0.500     3.026
+     0.500     3.026
+ds fir
+di 
+     0.500     3.026
+co black
+ds line
+di 
+     0.500     3.073
+     0.500     3.073
+ds fir
+di 
+     0.500     3.073
+co red
+ds line
+di 
+     0.500     4.770
+     1.000     4.770
+ds fir
+di 
+     1.000     4.770
+dl    1.100,   4.670, 3/2+
+co black
+ds line
+di 
+     0.500     4.927
+     0.500     4.927
+ds fir
+di 
+     0.500     4.927
+co black

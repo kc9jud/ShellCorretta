@@ -1,0 +1,37 @@
+!                change the potential if needed
+!                if ho is not used change mh to td below
+cp
+ho
+! this if the effective operator for usd (w)
+!                change the effective operator if needed
+!                the free-nucleon values are dep=0.5, den=0.5, gsp=5.586, gsn=-3.826,
+!                glp=1 and gln=0, gpp=gpn=0where ep=1+dep and en=den
+cgw
+  0.360,  0.450,  4.940, -3.380,  1.137, -0.079,  0.340, -0.220,
+!                change the file name if needed
+open
+gam,ne200w.dei   
+text
+! model space = sd      
+text
+! interaction = w       
+!                put ! in the line below if you want more screen output
+cut
+!                change the value of the negative numbers below 
+!                to change the number of initial, final states
+!                change the a and z values if needed
+az
+ 20, 10
+gp
+mh
+e2,10
+  0.0,  2.0,  0.0,  0.0
+   -1,   -5,  1,  1,0,bw2400_2404
+mh
+m1,10
+  2.0,  2.0,  0.0,  0.0
+    0,    0,  1,  1,0,bw2404_2404
+mh
+e2,10
+  2.0,  2.0,  0.0,  0.0
+    0,    0,  1,  1,0,bw2404_2404

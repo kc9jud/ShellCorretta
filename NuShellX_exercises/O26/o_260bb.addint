@@ -1,0 +1,7 @@
+addop input
+  10      0.000
+  1  1
+sdpn     
+usdb                ! opfil
+   10,  6,  1.000000,  0.895550,   ! neig,njl,spe_norm,me_norm
+

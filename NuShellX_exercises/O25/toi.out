@@ -1,0 +1,36 @@
+ia,iz,Emax (default Emax = 6 MeV)
+ o_025exp.lpt        file already exists                                (delete this file to make a new one)
+ /Users/tdisbrow2/Documents/nushellx/toi/mass-data/aud16.dat                     
+
+Based on ENSDF from November 2016 and 2016 mass evaluation
+
+BE     =    168.195 ( 0.165) MeV
+Qbeta- =     15.995 ( 0.191) MeV
+
+           Energy T    J+                J-               J-other                T1/2
+
+ /Users/tdisbrow2/Documents/nushellx/toi/toi-data/ensdf.025                      
+-----------------------------------------------------------------------------------------------
+
+
+S-p    =   0.000 ( 0.000)----------------------------------------------------------------------
+S-n    =  -0.757 ( 0.233)----------------------------------------------------------------------
+S-2p   =   0.000 ( 0.000)----------------------------------------------------------------------
+S-2n   =   3.435 ( 0.205)----------------------------------------------------------------------
+S-alpha=   0.000 ( 0.000)----------------------------------------------------------------------
+
+S+p       = -15.969 ( 0.199)
+S+n       =  -0.739 ( 0.233)
+S+2p      = -34.856 ( 0.188)
+S+2n      =   0.000 ( 0.000)
+S+alpha   = -11.354 ( 0.223)
+
+gap p     =   0.000 ( 0.000)
+gap n     =  -1.497 ( 0.330)
+gap 2p    =   0.000 ( 0.000)
+gap 2n    =   0.000 ( 0.000)
+gap alpha =   0.000 ( 0.000)
+
+Output is in toi-008-025.txt
+ia,iz,Emax (default Emax = 6 MeV)
+ /Users/tdisbrow2/Documents/nushellx/toi/mass-data/aud16.dat                     

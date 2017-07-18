@@ -1,0 +1,15 @@
+fixed form input for levp
+usda        interaction
+   -11.787  ground state energy
+   6        number of orbits
+  18   8    ia iz, followed by ex 2j parity
+     0.000   0  1
+     2.023   4  1
+     3.354   8  1
+     4.151   4  1
+     4.273   0  1
+     8.904   8  1
+     9.955   4  1
+    10.995   4  1
+    15.207   0  1
+    15.753   4  1

@@ -1,0 +1,20 @@
+
+2Ja =  0 dim =           1
+
+2Jb = 12 dim =           3
+2Jb = 10 dim =           6
+2Jb =  8 dim =          15
+2Jb =  6 dim =          15
+2Jb =  4 dim =          21
+2Jb =  2 dim =          12
+2Jb =  0 dim =           9
+
+approximate time to converge 10 states with 4-core (2.6 GHz)
+ 2J       J-dim         M-dim     t(min)   t(hour)
+ 12           3             3       0.50      0.01
+ 10           6             9       0.50      0.01
+  8          15            24       0.50      0.01
+  6          15            39       0.50      0.01
+  4          21            60       0.50      0.01
+  2          12            72       0.50      0.01
+  0           9            81       0.50      0.01
