@@ -88,20 +88,19 @@ def apply_operator(labels, ket):
 def tb_hamiltonian(mb_basis, two_body_matels):
     hamiltonian_matrix = np.zeros((len(mb_basis), len(mb_basis)))
     for i in range(0, len(mb_basis)):
-        for labels, matel in sorted(two_body_matels.items()):
-            ket = mb_basis[i][:]
+        ket = mb_basis[i]
+        for labels, matel in two_body_matels.items():
             bra, phase = apply_operator(labels, ket[:])
             if bra is None:
-                bra, phase = apply_operator(reversed(labels), ket[:])
-                if bra is None:
                     continue
-            # if (labels[0] == labels[1]):
-            #     phase *=2
-            for j in range(0, len(mb_basis)):
-                test_bra = mb_basis[j]
-                if bra == test_bra:
-                    hamiltonian_matrix[j, i] += matel*phase
-                    # hamiltonian_matrix[i, j] += matel*phase*scale_factor
+            if bra == ket:
+                hamiltonian_matrix[i, i] += matel*phase
+            else:
+                for j in range(0, i):
+                    test_bra = mb_basis[j]
+                    if bra == test_bra:
+                        hamiltonian_matrix[j, i] += matel*phase
+                        hamiltonian_matrix[i, j] += matel*phase
 
     return hamiltonian_matrix
 
