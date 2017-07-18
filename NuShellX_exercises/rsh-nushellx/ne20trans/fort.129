@@ -1,0 +1,14 @@
+
+md bw2404_2404
+cd bw2404_2404
+copy ..\fasttra.dat
+copy ..\*.sp
+copy ..\*.lpe
+copy ..\transt.*
+copy ..\*.nus
+copy ..\*.me
+copy ..\*.txi
+copy ..\*.inf
+NuShellX < transt.ne2000044 > transtne2000044.tcpu
+source shellxt2.bat > trans.cpu
+nucp bw2404_2404.txi ne200x222222.din ne200y222222.din bw2404_2404.trz > nucp1.txt

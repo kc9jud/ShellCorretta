@@ -1,0 +1,5 @@
+! ---------- shell input for bw2408.lpe
+sd                 input *.sp file name
+sdpn               proton-neutron *.sp file name
+w                  interaction file name
+   6   8   8   2   2   10       109   number of pn orbitals, inc-core, izc-core, nvp-valence nvn-valence, neig, dim

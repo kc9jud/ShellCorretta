@@ -1,0 +1,15 @@
+ia,iz,Emax (default Emax = 6 MeV)
+ /Users/tdisbrow2/Documents/nushellx/toi/mass-data/aud16.dat                     
+
+Based on ENSDF from November 2016 and 2016 mass evaluation
+
+BE     =      0.000 ( 0.000) MeV
+
+           Energy T    J+                J-               J-other                T1/2
+
+ /Users/tdisbrow2/Documents/nushellx/toi/toi-data/ensdf.028                      
+-----------------------------------------------------------------------------------------------
+
+Output is in toi-008-028.txt
+ia,iz,Emax (default Emax = 6 MeV)
+ /Users/tdisbrow2/Documents/nushellx/toi/mass-data/aud16.dat                     

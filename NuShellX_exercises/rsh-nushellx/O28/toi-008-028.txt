@@ -1,0 +1,8 @@
+
+Based on ENSDF from November 2016 and 2016 mass evaluation
+
+BE     =      0.000 ( 0.000) MeV
+
+           Energy T    J+                J-               J-other                T1/2
+
+-----------------------------------------------------------------------------------------------
